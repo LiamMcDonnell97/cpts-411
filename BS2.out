@@ -1,0 +1,288 @@
+Test for blocking send recive with bites m=1
+my rank=0
+Rank=0: number of processes =2
+Test for blocking send recive with bites m=1
+my rank=1
+Rank=1: number of processes =2
+Rank=1: sent message size 1 to rank 0; Send time 2001 microsec
+Rank=0: received message size 1 from rank 1; Recv time 2036 icrosec
+
+
+
+
+Test for blocking send recive with bites m=2
+my rank=0
+Rank=0: number of processes =2
+Test for blocking send recive with bites m=2
+my rank=1
+Rank=1: number of processes =2
+Rank=1: sent message size 2 to rank 0; Send time 2002 microsec
+Rank=0: received message size 2 from rank 1; Recv time 2037 icrosec
+
+
+
+
+Test for blocking send recive with bites m=4
+my rank=0
+Rank=0: number of processes =2
+Test for blocking send recive with bites m=4
+my rank=1
+Rank=1: number of processes =2
+Rank=1: sent message size 4 to rank 0; Send time 2005 microsec
+Rank=0: received message size 4 from rank 1; Recv time 2036 icrosec
+
+
+
+
+Test for blocking send recive with bites m=8
+my rank=0
+Rank=0: number of processes =2
+Test for blocking send recive with bites m=8
+my rank=1
+Rank=1: number of processes =2
+Rank=1: sent message size 8 to rank 0; Send time 2007 microsec
+Rank=0: received message size 8 from rank 1; Recv time 2036 icrosec
+
+
+
+
+Test for blocking send recive with bites m=16
+my rank=0
+Rank=0: number of processes =2
+Test for blocking send recive with bites m=16
+my rank=1
+Rank=1: number of processes =2
+Rank=1: sent message size 16 to rank 0; Send time 2001 microsec
+Rank=0: received message size 16 from rank 1; Recv time 2036 icrosec
+
+
+
+
+Test for blocking send recive with bites m=32
+my rank=0
+Rank=0: number of processes =2
+Test for blocking send recive with bites m=32
+my rank=1
+Rank=1: number of processes =2
+Rank=1: sent message size 32 to rank 0; Send time 2006 microsec
+Rank=0: received message size 32 from rank 1; Recv time 2035 icrosec
+
+
+
+
+Test for blocking send recive with bites m=64
+my rank=0
+Rank=0: number of processes =2
+Test for blocking send recive with bites m=64
+my rank=1
+Rank=1: number of processes =2
+Rank=1: sent message size 64 to rank 0; Send time 2003 microsec
+Rank=0: received message size 64 from rank 1; Recv time 2036 icrosec
+
+
+
+
+Test for blocking send recive with bites m=128
+my rank=0
+Rank=0: number of processes =2
+Test for blocking send recive with bites m=128
+my rank=1
+Rank=1: number of processes =2
+Rank=1: sent message size 128 to rank 0; Send time 2005 microsec
+Rank=0: received message size 128 from rank 1; Recv time 2037 icrosec
+
+
+
+
+Test for blocking send recive with bites m=256
+my rank=0
+Rank=0: number of processes =2
+Test for blocking send recive with bites m=256
+my rank=1
+Rank=1: number of processes =2
+Rank=1: sent message size 256 to rank 0; Send time 2007 microsec
+Rank=0: received message size 256 from rank 1; Recv time 2038 icrosec
+
+
+
+
+Test for blocking send recive with bites m=512
+my rank=0
+Rank=0: number of processes =2
+Test for blocking send recive with bites m=512
+my rank=1
+Rank=1: number of processes =2
+Rank=1: sent message size 512 to rank 0; Send time 2006 microsec
+Rank=0: received message size 512 from rank 1; Recv time 2037 icrosec
+
+
+
+
+Test for blocking send recive with bites m=1024
+my rank=0
+Rank=0: number of processes =2
+Test for blocking send recive with bites m=1024
+my rank=1
+Rank=1: number of processes =2
+Rank=1: sent message size 1024 to rank 0; Send time 2002 microsec
+Rank=0: received message size 1024 from rank 1; Recv time 2043 icrosec
+
+
+
+
+Test for blocking send recive with bites m=2048
+my rank=0
+Rank=0: number of processes =2
+Test for blocking send recive with bites m=2048
+my rank=1
+Rank=1: number of processes =2
+Rank=1: sent message size 2048 to rank 0; Send time 2006 microsec
+Rank=0: received message size 2048 from rank 1; Recv time 2057 icrosec
+
+
+
+
+Test for blocking send recive with bites m=4096
+my rank=0
+Rank=0: number of processes =2
+Test for blocking send recive with bites m=4096
+my rank=1
+Rank=1: number of processes =2
+Rank=1: sent message size 4096 to rank 0; Send time 2009 microsec
+Rank=0: received message size 4096 from rank 1; Recv time 2073 icrosec
+
+
+
+
+Test for blocking send recive with bites m=8192
+my rank=0
+Rank=0: number of processes =2
+Test for blocking send recive with bites m=8192
+my rank=1
+Rank=1: number of processes =2
+Rank=1: sent message size 8192 to rank 0; Send time 2012 microsec
+Rank=0: received message size 8192 from rank 1; Recv time 2112 icrosec
+
+
+
+
+Test for blocking send recive with bites m=16384
+my rank=0
+Rank=0: number of processes =2
+Test for blocking send recive with bites m=16384
+my rank=1
+Rank=1: number of processes =2
+Rank=1: sent message size 16384 to rank 0; Send time 2054 microsec
+Rank=0: received message size 16384 from rank 1; Recv time 2177 icrosec
+
+
+
+
+Test for blocking send recive with bites m=32768
+my rank=0
+Rank=0: number of processes =2
+Test for blocking send recive with bites m=32768
+my rank=1
+Rank=1: number of processes =2
+Rank=1: sent message size 32768 to rank 0; Send time 2082 microsec
+Rank=0: received message size 32768 from rank 1; Recv time 2318 icrosec
+
+
+
+
+Test for blocking send recive with bites m=65536
+my rank=0
+Rank=0: number of processes =2
+Test for blocking send recive with bites m=65536
+my rank=1
+Rank=1: number of processes =2
+Rank=1: sent message size 65536 to rank 0; Send time 2680 microsec
+Rank=0: received message size 65536 from rank 1; Recv time 2758 icrosec
+
+
+
+
+Test for blocking send recive with bites m=131072
+my rank=0
+Rank=0: number of processes =2
+Test for blocking send recive with bites m=131072
+my rank=1
+Rank=1: number of processes =2
+Rank=1: sent message size 131072 to rank 0; Send time 3229 microsec
+Rank=0: received message size 131072 from rank 1; Recv time 3352 icrosec
+
+
+
+
+Test for blocking send recive with bites m=262144
+my rank=0
+Rank=0: number of processes =2
+Test for blocking send recive with bites m=262144
+my rank=1
+Rank=1: number of processes =2
+Rank=1: sent message size 262144 to rank 0; Send time 4242 microsec
+Rank=0: received message size 262144 from rank 1; Recv time 4467 icrosec
+
+
+
+
+Test for blocking send recive with bites m=512428
+my rank=0
+Rank=0: number of processes =2
+Test for blocking send recive with bites m=512428
+my rank=1
+Rank=1: number of processes =2
+Rank=1: sent message size 512428 to rank 0; Send time 6184 microsec
+Rank=0: received message size 512428 from rank 1; Recv time 6599 icrosec
+
+
+
+
+Test for blocking send recive with bites m=1048576
+my rank=0
+Rank=0: number of processes =2
+Test for blocking send recive with bites m=1048576
+my rank=1
+Rank=1: number of processes =2
+Rank=1: sent message size 1048576 to rank 0; Send time 10345 microsec
+Rank=0: received message size 1048576 from rank 1; Recv time 11153 icrosec
+
+
+
+
+Test for blocking send recive with bites m=2097152
+my rank=0
+Rank=0: number of processes =2
+Test for blocking send recive with bites m=2097152
+my rank=1
+Rank=1: number of processes =2
+Rank=1: sent message size 2097152 to rank 0; Send time 18458 microsec
+Rank=0: received message size 2097152 from rank 1; Recv time 20056 icrosec
+
+
+
+
+Test for blocking send recive with bites m=4194304
+my rank=0
+Rank=0: number of processes =2
+Test for blocking send recive with bites m=4194304
+my rank=1
+Rank=1: number of processes =2
+Rank=1: sent message size 4194304 to rank 0; Send time 35583 microsec
+Rank=0: received message size 4194304 from rank 1; Recv time 37887 icrosec
+
+
+
+
+Test for blocking send recive with bites m=8388608
+my rank=0
+Rank=0: number of processes =2
+Test for blocking send recive with bites m=8388608
+my rank=1
+Rank=1: number of processes =2
+Rank=1: sent message size 8388608 to rank 0; Send time 70905 microsec
+Rank=0: received message size 8388608 from rank 1; Recv time 73537 icrosec
+
+
+
+
