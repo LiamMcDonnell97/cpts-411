@@ -1,3 +1,9 @@
+// Name:       Liam McDonnell
+// Date:       10/5/20
+// Class:      CPTS-411
+// Assignment: Project 2
+// Task:       Build conway's game of life in c using MPI
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
@@ -5,9 +11,16 @@
 #include <assert.h>
 #include <math.h>
 #include <sys/time.h>
-
+//these are my macros and function declarations for this assignment
+//NOTE: I did not include a function called GnerateInitialGoL(), I included all of the code that
+//      Would go in that function in my main
 #define ROOT 0
-
+void Simulate(int G, int p, int rank, int cols, int rows, CELL localRow[rows][cols], MPI_Status status);
+CELL DetermineState(CELL cell);
+void DisplayGoL(int p, int rank, int rows, int cols, CELL localRow[rows][cols], MPI_Status status);
+int mod(int x, int y);
+void badDisplay(int rank, int rows, int cols, CELL row[rows][cols], int mode);
+//This is the Cell structure I will use to determine changes to the board of life
 typedef struct Cell {
 	char state;	// state of cell: either D or A
 
@@ -21,12 +34,7 @@ typedef struct Cell {
 	char downRight;
 } CELL;
 
-void printCellStates(CELL cell);
-void Simulate(int G, int p, int rank, int cols, int rows, CELL localRow[rows][cols], MPI_Status status);
-CELL DetermineState(CELL cell);
-void DisplayGoL(int p, int rank, int rows, int cols, CELL localRow[rows][cols], MPI_Status status);
-int mod(int x, int y);
-void badDisplay(int rank, int rows, int cols, CELL row[rows][cols], int mode);
+
 
 struct timeval t7, t8;
 int commTime = 0;
@@ -46,29 +54,22 @@ int main(int argc, char *argv[])
 	srand(time(NULL));
 
 	int globalSeeds[p];				
+	
 
-	assert(argc == 3);	
-
-        // assign user variables
-        int n = atoi(argv[1]);          // get matrix dimension
-        int G = atoi(argv[2]);          // get number of generations
-
+    // assign user variables, n represents matrix size(n*n) and G represents number of generations
+    int n = atoi(argv[1]);          
+    int G = atoi(argv[2]);          
+	//create random functionality to this code
 	if (rank == ROOT) {
 		// populate seeds with random numbers
 		for (i = 0; i < p; i++) {
 			globalSeeds[i] = rand() % INT_MAX + 1;
 		}
 	}
-	
-	gettimeofday(&t7, NULL);
-
-	// send each global seed to every other rank
+	// We send each of our randoms seeds to a given rank
 	MPI_Scatter(&globalSeeds, 1, MPI_INT, &localSeed, 1, MPI_INT, ROOT, MPI_COMM_WORLD);
-
-	gettimeofday(&t8, NULL);
-	commTime += (t8.tv_sec-t7.tv_sec)*1000 + (t8.tv_usec-t7.tv_usec)/1000;
 	
-	// locally create list of (n^2)/p random values
+	// create the matrix that is our board for game of life
 	int rows;
 	int cols;
 	if (n < p) { rows = 1; }
@@ -80,7 +81,7 @@ int main(int argc, char *argv[])
 	int localMatrix[rows][cols];
 	srand(localSeed);
 	
-	// assign each cell a random number
+	// assign each cell a random number to know weather a cell starts dead or alive
 	for (i = 0; i < rows; i++) {
 		for (j = 0; j < cols; j++) {
 			localMatrix[i][j] = rand() % INT_MAX + 1;
@@ -88,42 +89,35 @@ int main(int argc, char *argv[])
 	}
 
 
-	// determine status of all cells and store in localRow
+	// determine status of all cells
 	CELL localRow[rows][cols];
 	for (i = 0; i < rows; i++) {
 		for (j = 0; j < cols; j++) {
-			if (localMatrix[i][j] % 2 == 0) {	// if number is even, cell is ALIVE
+			if (localMatrix[i][j] % 2 == 0) {	// cell starts
 				localRow[i][j].state = 'A';
 			}
-			else {				// if number is odd, cell is DEAD
+			else {				// cell starts dead
 				localRow[i][j].state = 'D';
 			}	
 		}	
 	}
 	Simulate(G, p, rank, rows, cols, localRow, status);
 
-	printf("\n\nTotal communication time: %d milliseconds\n\n", commTime);
-
 	MPI_Finalize();
 }
-
-// runs generations and updates matrix
-void Simulate(int G, int p, int rank, int rows, int cols, CELL localRow[rows][cols], MPI_Status status) {
+//simulation function that runs all the steps of game of life
+void Simulate(int G, int p, int rank, int cols, int rows, CELL localRow[rows][cols], MPI_Status status)
+{
 	int i = 0, j = 0, k = 0, avgGenerationRuntime = 0, displayTime = 0;
 	struct timeval t1, t2, t3, t4, t5, t6;
-	
-	// start total runtime
 	gettimeofday(&t5, NULL);
-	
-	char top[255], bottom[255], row[255];
-	char rTop[255], rBottom[255], rRow[255];
-
-	// iterate generations
+	char top[255],bottom[255],row[255];
+	char rTop[255],rBottom[255],rRow[255];
 	i = 0;
 	while (i < G) {
 		// start timing current generation
 		gettimeofday(&t1, NULL);
-
+		printf("we are on 
 		// get neighbors
 			
 		for (i = 0; i < cols; i++) {
@@ -131,19 +125,17 @@ void Simulate(int G, int p, int rank, int rows, int cols, CELL localRow[rows][co
 			bottom[i] = localRow[rows - 1][i].state;
 		}
      		
-		gettimeofday(&t7, NULL);
 
 		// send top row up
-               	MPI_Send(top, cols + 1, MPI_CHAR, mod(rank - 1, p), 0, MPI_COMM_WORLD);
-               	// send bottom row down
-               	MPI_Send(bottom, cols + 1, MPI_CHAR, mod(rank + 1, p), 1, MPI_COMM_WORLD);
-               	// recv bottom row from down
-               	MPI_Recv(rBottom, cols + 1, MPI_CHAR, mod(rank + 1, p), 0, MPI_COMM_WORLD, &status);
-               	// recv top row from up
-               	MPI_Recv(rTop, cols + 1, MPI_CHAR, mod(rank - 1, p), 1, MPI_COMM_WORLD, &status);
-     		
-		gettimeofday(&t8, NULL);
-        	commTime += (t8.tv_sec-t7.tv_sec)*1000 + (t8.tv_usec-t7.tv_usec)/1000;
+		MPI_Send(top, cols + 1, MPI_CHAR, mod(rank - 1, p), 0, MPI_COMM_WORLD);
+		// send bottom row down
+		MPI_Send(bottom, cols + 1, MPI_CHAR, mod(rank + 1, p), 1, MPI_COMM_WORLD);
+		// recv bottom row from down
+		MPI_Recv(rBottom, cols + 1, MPI_CHAR, mod(rank + 1, p), 0, MPI_COMM_WORLD, &status);
+		// recv top row from up
+		MPI_Recv(rTop, cols + 1, MPI_CHAR, mod(rank - 1, p), 1, MPI_COMM_WORLD, &status);
+     	
+	
                 
 		// assign top, bottom, left, and right neighbors
         	for (i = 0; i < rows; i++) {
@@ -193,31 +185,21 @@ void Simulate(int G, int p, int rank, int rows, int cols, CELL localRow[rows][co
 		// print matrix every other generation		
 		if ((i % 2) == 0){ 
 			// start display time
-			gettimeofday(&t3, NULL);
 			DisplayGoL(p, rank, rows, cols, localRow, status);
-			gettimeofday(&t4, NULL);
-			displayTime += (t4.tv_sec-t3.tv_sec)*1000 + (t4.tv_usec-t3.tv_usec)/1000;
 		}
 	
 		printf("\n");
+		//finally increment i until generations have happened
 		i++;
 	}
-
-	printf("\n\nAvg generation runtime: %d milliseconds\n\n", avgGenerationRuntime / G);
-	
-	// end total runtime
-	gettimeofday(&t6, NULL);
-        int totalRuntime = ((t6.tv_sec-t5.tv_sec)*1000 + (t6.tv_usec-t5.tv_usec)/1000) - displayTime;
-	printf("\n\nTotal runtime: %d milliseconds\n\n", totalRuntime);
-	printf("\n\nTotal computation time: %d milliseconds\n\n", totalRuntime - commTime);
+	printf("\n\nAvg generation runtime: %d microseconds\n\n", avgGenerationRuntime / G);
 }
-
 
 // display entire matrix
 void DisplayGoL(int p, int rank, int rows, int cols, CELL localRow[rows][cols], MPI_Status status) {
 	int i = 0, j = 0;
 	
-	// send each local matrix to root
+	// we need to send all of our local matrixies to the root
 	if (rank == 0) {
 		// add local matrix to masterMatrix
 		char masterMatrix[rows * p][cols];
@@ -228,7 +210,7 @@ void DisplayGoL(int p, int rank, int rows, int cols, CELL localRow[rows][cols], 
 		}
 		
 		j = 1;
-		// recv
+		// recive all the calls
 		for (i = rows; i < rows * p; i += rows) {
 			gettimeofday(&t7, NULL);
 
@@ -238,7 +220,7 @@ void DisplayGoL(int p, int rank, int rows, int cols, CELL localRow[rows][cols], 
         		commTime += (t8.tv_sec-t7.tv_sec)*1000 + (t8.tv_usec-t7.tv_usec)/1000;
 		}
 		
-		// print master matrix
+		// finally we can print the masterMatrix
 		for (i = 0; i < rows * p; i++){
 			for (j = 0; j < cols; j++){
 				printf("%c ", masterMatrix[i][j]);
@@ -253,26 +235,11 @@ void DisplayGoL(int p, int rank, int rows, int cols, CELL localRow[rows][cols], 
                 	for (j = 0; j < cols; j++) {
                         	localMatrix[i][j] = localRow[i][j].state;
                 	}
-        	}
-		
-		// send local matrix to root
-		gettimeofday(&t7, NULL);
-		
+        	}	
+		// send local matrix to root	
 		MPI_Send(&localMatrix, rows * cols, MPI_CHAR, ROOT, 0, MPI_COMM_WORLD);
-
-        	gettimeofday(&t8, NULL);
-        	commTime += (t8.tv_sec-t7.tv_sec)*1000 + (t8.tv_usec-t7.tv_usec)/1000;
 	}
 }
-
-
-
-
-// just prints a cell and its neighbors
-void printCellStates(CELL cell) {
-	printf("cell: %c, up: %c, down: %c, left: %c, right: %c, downLeft: %c, downRight: %c, upLeft: %c, upRight: %c\n\n", cell.up, cell.down, cell.left, cell.right, cell.downLeft, cell.downRight, cell.upLeft, cell.upRight);
-}
-
 
 // determines state of new cell
 CELL DetermineState(CELL cell) {
@@ -304,7 +271,7 @@ CELL DetermineState(CELL cell) {
 	return cell;
 }
 
-
+//I was having trouble with modding so I just made this small helper function
 int mod(int x, int y)
 {
     int r = x % y;
